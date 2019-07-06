@@ -8,6 +8,35 @@ kind: Secret
 metadata:
   name: mysql-secret
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: flask-mysql
+  name: flask-mysql
+spec:
+  containers:
+  - image: kissycomnet/flaskmysql:latest
+    name: flask-mysql
+    resources: {}
+    env:
+    - name: db_password
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: password
+    - name: db_username
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: user
+    - name: db_name
+      value: kissy
+    - name: ipaddress
+      value: mysql #10.244.0.53 # mysql serviceに変更
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -95,5 +124,4 @@ spec:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
-
 
