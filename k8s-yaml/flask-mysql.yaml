@@ -1,0 +1,99 @@
+---
+#kubectl create secret generic mysql-secret --from-literal=user=root --from-literal=password=kissy -o yaml --dry-run 
+apiVersion: v1
+data:
+  password: a2lzc3k=
+  user: cm9vdA==
+kind: Secret
+metadata:
+  name: mysql-secret
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mysql-pv-volume
+  labels:
+    type: local
+spec:
+  #storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  #storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          #value: kissy1
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        - name: user
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user
+        - name: db_name
+          value: kissy
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "sh"
+              - "-c"
+              - "sleep 25; mysql -u${user} -p${MYSQL_ROOT_PASSWORD} -e \"create database ${db_name}; create table ${db_name}.tbl_user(user_id MEDIUMINT NOT NULL AUTO_INCREMENT,  user_name varchar(100), user_email varchar(100), user_password varchar(100), PRIMARY KEY (user_id));\""
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+
+

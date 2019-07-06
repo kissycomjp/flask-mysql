@@ -1,5 +1,5 @@
 import pymysql
-from db_config import mysql
+#from db_config import mysql
 from flask import jsonify
 from flask import flash, request
 from werkzeug import generate_password_hash, check_password_hash
@@ -71,16 +71,22 @@ def users():
 		cursor.close() 
 		conn.close()
 		
-@app.route('/user/')
-def user(id):
+@app.route('/user', methods=['POST'])
+def user():
 	try:
-		conn = mysql.connect()
-		cursor = conn.cursor(pymysql.cursors.DictCursor)
-		cursor.execute("SELECT * FROM tbl_user WHERE user_id=%s", id)
-		row = cursor.fetchone()
-		resp = jsonify(row)
-		resp.status_code = 200
-		return resp
+		_json = request.json
+		_user_id = _json['user_id']
+		# validate the received values
+		if _user_id and request.method == 'POST':
+			conn = mysql.connect()
+			cursor = conn.cursor(pymysql.cursors.DictCursor)
+			cursor.execute("SELECT * FROM tbl_user WHERE user_id=%s",_user_id)
+			row = cursor.fetchone()
+			resp = jsonify(row)
+			resp.status_code = 200
+			return resp
+		else:
+			return not_found()	
 	except Exception as e:
 		print(e)
 	finally:
@@ -91,7 +97,7 @@ def user(id):
 def update_user():
 	try:
 		_json = request.json
-		_id = _json['id']
+		_id = _json['user_id']
 		_name = _json['name']
 		_email = _json['email']
 		_password = _json['pwd']		
@@ -117,16 +123,22 @@ def update_user():
 		cursor.close() 
 		conn.close()
 		
-@app.route('/delete/')
-def delete_user(id):
+@app.route('/delete', methods=['POST'])
+def delete_user():
 	try:
-		conn = mysql.connect()
-		cursor = conn.cursor()
-		cursor.execute("DELETE FROM tbl_user WHERE user_id=%s", (id,))
-		conn.commit()
-		resp = jsonify('User deleted successfully!')
-		resp.status_code = 200
-		return resp
+		_json = request.json
+		_user_id = _json['user_id']
+		# validate the received values
+		if _user_id and request.method == 'POST':
+			conn = mysql.connect()
+			cursor = conn.cursor()
+			cursor.execute("DELETE FROM tbl_user WHERE user_id=%s", _user_id)
+			conn.commit()
+			resp = jsonify('User deleted successfully!')
+			resp.status_code = 200
+			return resp
+		else:
+			return not_found()
 	except Exception as e:
 		print(e)
 	finally:
