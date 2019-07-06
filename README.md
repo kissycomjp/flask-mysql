@@ -28,22 +28,24 @@ curl 127.0.0.1:8080/users
 </pre>
 #### show specific user
 curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"4"}' 127.0.0.1:8080/user
+<pre>
 {
   "user_email": "hogehoge@xxxx.net", 
   "user_id": 4, 
   "user_name": "kissy1", 
   "user_password": "pbkdf2:sha256:150000$J7k3r9fb$f48004429125b53e17612b9d38e7e8fb3f837d69ad3c550453857abb38d33c79"
 }
+</pre>
 #### update user
 curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"user_id":"4","email":"ukiuki@xxxx.net","name":"kissy4","pwd":"secret4"}' 127.0.0.1:8080/update
-"User updated successfully!
+<pre>"User updated successfully!</pre>
 
 #### add user
 curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"email":"hogehoge@xxxx.net","name":"kissy1","pwd":"secret1"}' 127.0.0.1:8080/add
-
+<pre>"User added successfully!"</pre>
 #### delete user
 curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"3"}' 127.0.0.1:8080/delete
-"User deleted successfully!"
+<pre>"User deleted successfully!"</pre>
 
 ### Install
 kubectl apply -f https://raw.githubusercontent.com/kissycomjp/flask-mysql/master/k8s-yaml/flask-mysql.yaml
