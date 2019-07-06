@@ -5,7 +5,7 @@ This is Flask+MySQL RESTful API which is very simple, so it's easy to learn ever
 ### Usage
 #### show users
 curl 127.0.0.1:8080/users
-[
+<pre>[
   {
     "user_email": "hogehoge@xxxx.net", 
     "user_id": 4, 
@@ -25,7 +25,7 @@ curl 127.0.0.1:8080/users
     "user_password": "pbkdf2:sha256:150000$GV2bxCDm$8468183bb39635c647a5a920777f9b0a7ec817ce5090a863d733315a1fd5b9a0"
   }
 ]
-
+</pre>
 #### show specific user
 curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"4"}' 127.0.0.1:8080/user
 {
