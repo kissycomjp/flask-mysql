@@ -48,7 +48,10 @@ curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d 
 <pre>"User deleted successfully!"</pre>
 
 ### Install
-kubectl apply -f https://raw.githubusercontent.com/kissycomjp/flask-mysql/master/k8s-yaml/flask-mysql.yaml
+1.Make sure make directory for pv on master and worker node
+<pre>hogeuser@k8s-master:~/flask-mysql$ sudo mkdir /mnt/data</pre>
+2.make pods
+<pre>kubectl apply -f https://raw.githubusercontent.com/kissycomjp/flask-mysql/master/k8s-yaml/flask-mysql.yaml</pre>
 
 ### Contribution
 ### Licence
