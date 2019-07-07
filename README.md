@@ -3,7 +3,7 @@
 This is Flask+MySQL RESTful API which is very simple, so it's easy to learn everyone.
 ### Description
 ### Usage
-Firslty, you need verify the flask-mysql clusterIP(i.e 10.101.20.201)
+Firslty, you need to verify the flask-mysql clusterIP(i.e 10.101.20.201)
 <pre>kubectl get svc
 NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 flask-mysql   ClusterIP   10.101.20.201    <none>        8080/TCP         79s
