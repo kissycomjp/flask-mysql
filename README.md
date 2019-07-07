@@ -3,9 +3,21 @@
 This is Flask+MySQL RESTful API which is very simple, so it's easy to learn everyone.
 ### Description
 ### Usage
+Firslty, you need verify the flask-mysql clusterIP(i.e 10.101.20.201)
+<pre>kubectl get svc
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+flask-mysql   ClusterIP   10.101.20.201    <none>        8080/TCP         79s
+</pre>
+
+#### add user
+<pre>
+curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"email":"hogehoge@xxxx.net","name":"kissy1","pwd":"secret1"}' 127.0.0.1:8080/add
+"User added successfully!"</pre>
+
 #### show users
-curl 127.0.0.1:8080/users
-<pre>[
+<pre>
+curl [clusterIP]:8080/users
+[
   {
     "user_email": "hogehoge@xxxx.net", 
     "user_id": 4, 
@@ -26,9 +38,10 @@ curl 127.0.0.1:8080/users
   }
 ]
 </pre>
+
 #### show specific user
-curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"4"}' 127.0.0.1:8080/user
 <pre>
+curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"4"}' [clusterIP]:8080/user
 {
   "user_email": "hogehoge@xxxx.net", 
   "user_id": 4, 
@@ -36,16 +49,16 @@ curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d 
   "user_password": "pbkdf2:sha256:150000$J7k3r9fb$f48004429125b53e17612b9d38e7e8fb3f837d69ad3c550453857abb38d33c79"
 }
 </pre>
-#### update user
-curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"user_id":"4","email":"ukiuki@xxxx.net","name":"kissy4","pwd":"secret4"}' 127.0.0.1:8080/update
-<pre>"User updated successfully!</pre>
 
-#### add user
-curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"email":"hogehoge@xxxx.net","name":"kissy1","pwd":"secret1"}' 127.0.0.1:8080/add
-<pre>"User added successfully!"</pre>
+#### update user
+<pre>
+curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"user_id":"4","email":"ukiuki@xxxx.net","name":"kissy4","pwd":"secret4"}' [clusterIP]:8080/update
+"User updated successfully!</pre>
+
 #### delete user
-curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"3"}' 127.0.0.1:8080/delete
-<pre>"User deleted successfully!"</pre>
+<pre>
+curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d '{"user_id":"3"}' [clusterIP]:8080/delete
+"User deleted successfully!"</pre>
 
 ### Install
 1.Make sure make directory for pv on master and worker node
