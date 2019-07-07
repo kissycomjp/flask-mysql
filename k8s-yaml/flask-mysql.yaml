@@ -134,7 +134,7 @@ spec:
               command:
               - "sh"
               - "-c"
-              - "sleep 25; mysql -u${user} -p${MYSQL_ROOT_PASSWORD} -e \"create database ${db_name}; create table ${db_name}.tbl_user(user_id MEDIUMINT NOT NULL AUTO_INCREMENT,  user_name varchar(100), user_email varchar(100), user_password varchar(100), PRIMARY KEY (user_id));\""
+              - "sleep 25;count=`mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'show databases;' | grep -c ${db_name}`;  if [ $count -gt 0 ]; then echo \"OK\" ; else mysql -u${user} -p${MYSQL_ROOT_PASSWORD} -e \"create database ${db_name}; create table ${db_name}.tbl_user(user_id MEDIUMINT NOT NULL AUTO_INCREMENT,  user_name varchar(100), user_email varchar(100), user_password varchar(100), PRIMARY KEY (user_id));\";fi"
         ports:
         - containerPort: 3306
           name: mysql
