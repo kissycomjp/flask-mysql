@@ -11,7 +11,7 @@ flask-mysql   ClusterIP   10.101.20.201    <none>        8080/TCP         79s
 
 #### add user
 <pre>
-curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"email":"hogehoge@xxxx.net","name":"kissy1","pwd":"secret1"}' 127.0.0.1:8080/add
+curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d  '{"email":"hogehoge@xxxx.net","name":"kissy1","pwd":"secret1"}' [clusterIP]:8080/add
 "User added successfully!"</pre>
 
 #### show users
@@ -61,7 +61,7 @@ curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d 
 "User deleted successfully!"</pre>
 
 ### Install
-1.Make sure make directory for pv on master and worker node
+1.Make sure to make directory for pv on master and worker node
 <pre>hogeuser@k8s-master:~/flask-mysql$ sudo mkdir /mnt/data</pre>
 2.make pods
 <pre>kubectl apply -f https://raw.githubusercontent.com/kissycomjp/flask-mysql/master/k8s-yaml/flask-mysql.yaml</pre>
