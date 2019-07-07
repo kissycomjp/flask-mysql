@@ -66,6 +66,8 @@ curl -X POST -H 'Accept:application/json' -H 'Content-Type:application/json' -d 
 2.make pods
 <pre>kubectl apply -f https://raw.githubusercontent.com/kissycomjp/flask-mysql/master/k8s-yaml/flask-mysql.yaml</pre>
 
-### Contribution
+### Blockquotes
+https://www.serverlab.ca/tutorials/containers/kubernetes/how-to-run-flask-docker-containers-in-kubernetes/
+
 ### Licence
 ### Author
